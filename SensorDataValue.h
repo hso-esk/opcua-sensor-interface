@@ -195,8 +195,10 @@ public:
 	/**
 	 * \brief	Set the value of the data value element as string,
 	 *
-	 * 			Sets the value of the data element as as integer. If
-	 * 			the types do not match the value will not be assigned.
+	 * 			Sets the value of the data element as as string.
+	 * 			CR and LF will be ignored and act as a stop
+	 * 			condition. If the types do not match the value will not
+	 * 			be assigned.
 	 *
 	 * 	\param	val		Value to set.
 	 *
@@ -207,10 +209,11 @@ public:
 		{
 			size_t l = snprintf(m_val.cStr, SENSORDATAVALUE_STRMAX,
 					"%s", val.c_str());
+			size_t pos = strcspn( m_val.cStr, "\r\n" );
 
-			/* remove trailing newline if it exists */
-			if( (l > 1) && (m_val.cStr[l-1] == '\n') )
-				m_val.cStr[l-1] = '\0';
+			/* remove trailing CR or LF if it exists */
+			if( pos  < l )
+				m_val.cStr[pos] = '\0';
 			return 0;
 		}
 		return -1;
