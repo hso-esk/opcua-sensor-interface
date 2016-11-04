@@ -116,7 +116,7 @@ int16_t SensorDataFile::setValNative( const SensorDataValue* val )
 					break;
 
 				case SensorDataValue::TYPE_FLOAT:
-					fprintf( m_file, "%f\n", val->getVal().f );
+					fprintf( m_file, "%g\n", val->getVal().f );
 					break;
 
 				case SensorDataValue::TYPE_STRING:
