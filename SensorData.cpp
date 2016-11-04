@@ -94,15 +94,19 @@ int16_t SensorData::setVal( const SensorDataValue* val )
 */
 int16_t SensorData::observeVal( pf_observeCB pf_cb, void* p_param )
 {
-	if( pf_cb != NULL )
+	if( m_observable )
 	{
-		/* create a new callback elemet and insert it
-		 * into the callback vector */
-		struct s_cb cb =  { pf_cb, p_param };
-		m_cbs.push_back( cb );
-		return 0;
-	}
+		if( pf_cb != NULL )
+		{
+			/* create a new callback elemet and insert it
+			 * into the callback vector */
+			struct s_cb cb =  { pf_cb, p_param };
+			m_cbs.push_back( cb );
+			m_observed = true;
 
+			return 0;
+		}
+	}
 	return -1;
 }
 
