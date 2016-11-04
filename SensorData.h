@@ -67,6 +67,9 @@ class SensorData
 	 * 			observed. To observe sensor data a callback
 	 * 			function has to be given which shall be called
 	 * 			whenever the observed value changes.
+	 *
+	 * \param   p_val   	Name of the sensor data value that changed.
+	 * \param   p_param    	User parameter.
 	 */
 	typedef void (*pf_observeCB)(SensorDataValue* p_val, void* p_param);
 

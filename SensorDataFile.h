@@ -145,7 +145,7 @@ private:
     /**
      * \brief	Opens the internal file descriptor.
      *
-     * \param	defaultVal	Write default vavlue or not.
+     * \param	defaultVal	Write default value or not.
      * \return 	0 on success.
      */
     int16_t openFile( bool defaultVal = false );
