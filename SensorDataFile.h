@@ -71,11 +71,12 @@ public:
      *
      */
 	SensorDataFile( void )
-		: SensorData()
-		, m_file( NULL) {
+		: SensorData() {
 
 		/* open the file */
-		openFile( true );
+		FILE* p_file = openFile( true, true );
+		if( p_file != NULL )
+			fclose(p_file);
 	};
 
 
@@ -88,11 +89,12 @@ public:
      */
 	SensorDataFile( std::string name, std::string descr, SensorDataValue::e_type type,
 			int access )
-		: SensorData( name, descr, type, access )
-		, m_file(NULL) {
+		: SensorData( name, descr, type, access ) {
 
 		/* open the file */
-		openFile( true );
+		FILE* p_file = openFile( true, true );
+		if( p_file != NULL )
+			fclose(p_file);
 	};
 
     /**
@@ -102,13 +104,6 @@ public:
      *          this destructor should never be called directly.
      */
 	virtual ~SensorDataFile( void ) {
-		if( m_file != NULL )
-		{
-			/* close file */
-			fclose(m_file);
-			m_file = NULL;
-		}
-
 		/* delete file from system */
 		remove( getName().c_str() );
 	};
@@ -145,15 +140,14 @@ private:
     /**
      * \brief	Opens the internal file descriptor.
      *
+     * \param	wr			Open for writing or not.
      * \param	defaultVal	Write default value or not.
-     * \return 	0 on success.
+     *
+     * \return 	File Pointer on success or NULL on failure.
      */
-    int16_t openFile( bool defaultVal = false );
+    FILE* openFile( bool wr = false, bool defaultVal = false );
 
 private:
-
-    /** file object */
-    FILE* m_file;
 	
 };
 
