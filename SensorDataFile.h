@@ -72,7 +72,11 @@ public:
      */
 	SensorDataFile( void )
 		: SensorData()
-		, m_file( NULL) {};
+		, m_file( NULL) {
+
+		/* open the file */
+		openFile( true );
+	};
 
 
     /**
