@@ -71,7 +71,7 @@ class SensorData
 	 * \param   p_val   	Name of the sensor data value that changed.
 	 * \param   p_param    	User parameter.
 	 */
-	typedef void (*pf_observeCB)(SensorDataValue* p_val, void* p_param);
+	typedef void (*pf_observeCB)( const SensorDataValue* p_val, void* p_param );
 
 public:
 
@@ -191,7 +191,7 @@ public:
      *
      * \return  returns true if the value was set.
      */
-    int16_t setVal( SensorDataValue* val );
+    int16_t setVal( const SensorDataValue* val );
 
     /**
      * \brief   Observe the actual value sensor data element.
@@ -217,7 +217,7 @@ protected:
      *
      * \param	val		The new value.
      */
-    void valueChanged( SensorDataValue* val );
+    void valueChanged( const SensorDataValue* val );
 
 private:
 
@@ -245,7 +245,7 @@ private:
      *
      * \return  0 on success.
      */
-    virtual int16_t setValNative( SensorDataValue* val ) = 0;
+    virtual int16_t setValNative( const SensorDataValue* val ) = 0;
 
 private:
 

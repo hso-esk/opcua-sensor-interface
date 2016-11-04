@@ -69,7 +69,7 @@ const SensorDataValue* SensorData::getVal( void )
 /*
 * setVal()
 */
-int16_t SensorData::setVal( SensorDataValue* val )
+int16_t SensorData::setVal( const SensorDataValue* val )
 {
 	/* check if the value is writable */
 	if( m_writable)
@@ -110,7 +110,7 @@ int16_t SensorData::observeVal( pf_observeCB pf_cb, void* p_param )
 /*
 * observeVal()
 */
-void SensorData::valueChanged( SensorDataValue* val )
+void SensorData::valueChanged( const SensorDataValue* val )
 {
 	if( (val != NULL) && (*val != m_val) )
 	{

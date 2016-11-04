@@ -140,7 +140,7 @@ private:
      *
      * \return  0 on success.
      */
-    virtual int16_t setValNative( SensorDataValue* val );
+    virtual int16_t setValNative( const SensorDataValue* val );
 
     /**
      * \brief	Opens the internal file descriptor.

@@ -99,7 +99,7 @@ int16_t SensorDataFile::getValNative( SensorDataValue* val )
 /*
 * setValNative()
 */
-int16_t SensorDataFile::setValNative( SensorDataValue* val )
+int16_t SensorDataFile::setValNative( const SensorDataValue* val )
 {
 	/* Check for the file reference first */
 	if( (m_file != NULL) && (val != 0) )
