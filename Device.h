@@ -17,24 +17,24 @@
  */
 
 /**
- * \file    Sensor.h
+ * \file    Device.h
  * \author  Institute of reliable Embedded Systems
  *          and Communication Electronics
  * \date    $Date$
  * \version $Version$
  *
- * \brief   Description of the general Sensor Interface.
+ * \brief   Description of the general Device Interface.
  *
- *          The general Sensor Interface shall be used as base class for all
- *          kind of specific sensors.
+ *          The general Device Interface shall be used as base class for all
+ *          kind of specific devices.
  */
 
 
-#ifndef __SENSOR_H__
-#define __SENSOR_H__
-#ifndef __DECL_SENSOR_H__
-#define __DECL_SENSOR_H__ extern
-#endif /* #ifndef __DECL_SENSOR_H__ */
+#ifndef __DEVICE_H__
+#define __DEVICE_H__
+#ifndef __DECL_DEVICE_H__
+#define __DECL_DEVICE_H__ extern
+#endif /* #ifndef __DECL_DEVICE_H__ */
 
 
 /*
@@ -49,53 +49,53 @@
  */
 
 /**
- * \brief   General Sensor Class.
+ * \brief   General Device Class.
  *
- *          The Sensor Class provides the base class for all sensors.
+ *          The Device Class provides the base class for all devices.
  */
-class Sensor
+class Device
 {
 
 public:
 
     /**
-     * \brief   Default Constructor to create a sensor.  
+     * \brief   Default Constructor to create a device.
      */
-    Sensor();
+    Device();
 
     /**
-     * \brief   Constructor to create a sensor with a specific name.
+     * \brief   Constructor to create a device with a specific name.
      *
-     *          This constructor can be used to create a sensor with
+     *          This constructor can be used to create a device with
      *          a specific name.
      */
-    Sensor( std::string name );
+    Device( std::string name );
 
     /**
-     * \brief   Default Destructor of the sensor.
+     * \brief   Default Destructor of the device.
      */
-	virtual ~Sensor();
+	virtual ~Device();
 
     /**
-     * \brief   Get the name of the sensor.
+     * \brief   Get the name of the device.
      *
-     * \return  The name of the sensor.
+     * \return  The name of the device.
      */
     std::string getName( void );
 
     /**
-     * \brief   Set the name of the sensor.
+     * \brief   Set the name of the device.
      *
-     * \param   name    Name to give to the sensor.
+     * \param   name    Name to give to the device.
      */
     void setName( std::string name );
 
 private:
 
-    /** name of the sensor */
+    /** name of the device */
     std::string m_name;
 	
 };
 
-#endif /* #ifndef __SENSOR_H__ */
+#endif /* #ifndef __DEVICE_H__ */
 

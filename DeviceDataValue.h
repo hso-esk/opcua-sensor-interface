@@ -17,24 +17,24 @@
  */
 
 /**
- * \file    SensorData.h
+ * \file    DeviceDataValue.h
  * \author  Institute of reliable Embedded Systems
  *          and Communication Electronics
  * \date    $Date$
  * \version $Version$
  *
- * \brief   Description of a single sensor data element.
+ * \brief   Description of a single device data value element.
  *
- *          A sensor consist of several sensor elements. A sensor data element
- *          for example can be a variable or value that can be read or written.
+ *          A device data value element holds the actual data with a specific
+ *          type such as integer float or string.
  */
 
 
-#ifndef __SENSORDATAVALUE_H__
-#define __SENSORDATAVALUE_H__
-#ifndef __DECL_SENSORDATAVALUE_H__
-#define __DECL_SENSORDATAVALUE_H__ extern
-#endif /* #ifndef __DECL_SENSORDATAVALUE_H__ */
+#ifndef __DEVICEDATAVALUE_H__
+#define __DEVICEDATAVALUE_H__
+#ifndef __DECL_DEVICEDATAVALUE_H__
+#define __DECL_DEVICEDATAVALUE_H__ extern
+#endif /* #ifndef __DECL_DEVICEDATAVALUE_H__ */
 
 
 /*
@@ -51,12 +51,12 @@
  */
 
 /** maximum length of the value as a string */
-#define SENSORDATAVALUE_STRMAX			50
+#define DEVICEDATAVALUE_STRMAX			50
 
 /*
  * --- Class Definition ----------------------------------------------------- *
  */
-class SensorDataValue
+class DeviceDataValue
 {
 public:
 
@@ -79,12 +79,12 @@ public:
 		/** value as float */
 		float f;
 		/** value as string */
-		char cStr[SENSORDATAVALUE_STRMAX];
+		char cStr[DEVICEDATAVALUE_STRMAX];
 	};
 
 	/** overloaded comparison operator */
-	friend bool operator== (const SensorDataValue& cmp1,
-			const SensorDataValue& cmp2) {
+	friend bool operator== (const DeviceDataValue& cmp1,
+			const DeviceDataValue& cmp2) {
 
 		if( cmp1.m_type != cmp2.m_type )
 			return false;
@@ -116,8 +116,8 @@ public:
 	}
 
 	/** overloaded comparison operator */
-	friend bool operator!= (const SensorDataValue& cmp1,
-			const SensorDataValue& cmp2) {
+	friend bool operator!= (const DeviceDataValue& cmp1,
+			const DeviceDataValue& cmp2) {
 		return ! (cmp1 == cmp2);
 	}
 
@@ -126,19 +126,19 @@ public:
      *
      * \param   type    Type of the value.
      */
-	SensorDataValue( SensorDataValue::e_type type )
+	DeviceDataValue( DeviceDataValue::e_type type )
 		: m_type( type ) {
 
 		/* reset members */
 		m_val.i32 = 0;
 		m_val.f = 0;
-		memset( m_val.cStr, 0, SENSORDATAVALUE_STRMAX );
+		memset( m_val.cStr, 0, DEVICEDATAVALUE_STRMAX );
 	};
 
     /**
      * \brief   Default destructor.
      */
-	virtual ~SensorDataValue( void ) {};
+	virtual ~DeviceDataValue( void ) {};
 
 	/**
 	 * \brief	Get the type of the value,
@@ -207,7 +207,7 @@ public:
 	int16_t setVal( std::string val ) {
 		if( m_type == TYPE_STRING )
 		{
-			size_t l = snprintf(m_val.cStr, SENSORDATAVALUE_STRMAX,
+			size_t l = snprintf(m_val.cStr, DEVICEDATAVALUE_STRMAX,
 					"%s", val.c_str());
 			size_t pos = strcspn( m_val.cStr, "\r\n" );
 
@@ -228,5 +228,5 @@ private:
 	u_val m_val;
 };
 
-#endif /* #ifndef __SENSORDATAVALUE_H__ */
+#endif /* #ifndef __DEVICEDATAVALUE_H__ */
 

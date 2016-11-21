@@ -17,38 +17,39 @@
  */
 
 /**
- * \file    SensorDataFile.h
+ * \file    DeviceDataFile.h
  * \author  Institute of reliable Embedded Systems
  *          and Communication Electronics
  * \date    $Date$
  * \version $Version$
  *
- * \brief   Description of the file sensor data element.
+ * \brief   Description of the file device data element.
  *
- *          The file sensor data element describes a specific sensor data
+ *          The file device data element describes a specific device data
  *          that is accessible using the file system. Therefore it inherits
- *          from the general sensor data interface and includes some additional
+ *          from the general device data interface and includes some additional
  *          functions e.g. to access the according file descriptors.
  */
-#ifndef __SENSORDATAFILE_H__
-#define __SENSORDATAFILE_H__
-#ifndef __DECL_SENSORDATAFILE_H__
-#define __DECL_SENSORDATAFILE_H__ extern
-#endif /* #ifndef __DECL_SENSORDATAFILE_H__ */
+#ifndef __DEVICEDATAFILE_H__
+#define __DEVICEDATAFILE_H__
+
+#ifndef __DECL_DEVICEDATAFILE_H__
+#define __DECL_DEVICEDATAFILE_H__ extern
+#endif /* #ifndef __DECL_DEVICEDATAFILE_H__ */
 
 
 /*
  * --- Includes ------------------------------------------------------------- *
  */
 #include <iostream>
-#include "SensorData.h"
+#include <DeviceData.h>
 
 /*
  * --- DEFINES -------------------------------------------------------------- *
  */
 
 /** Prefix of the description line */
-#define SENSORDATAFILE_DESCR_PFX			"# "
+#define DEVICEDATAFILE_DESCR_PFX			"# "
 
 
 /*
@@ -56,22 +57,22 @@
  */
 
 /**
- * \brief   File Sensor Class.
+ * \brief   File Device Class.
  *
- *          The File Sensor Class provides the
+ *          The File Device Class provides the
  */
-class SensorDataFile
-		: public SensorData
+class DeviceDataFile
+		: public DeviceData
 {
 
 public:
 
     /**
-     * \brief   Default Constructor to create a sensor.
+     * \brief   Default Constructor to create a device.
      *
      */
-	SensorDataFile( void )
-		: SensorData() {
+	DeviceDataFile( void )
+		: DeviceData() {
 
 		/* open the file */
 		FILE* p_file = openFile( true, true );
@@ -83,13 +84,13 @@ public:
     /**
      * \brief   Constructor with a specific default name and description.
      *
-     * \param   name    Name of the sensor data element.
-     * \param   descr   Description of the sensor data element.
+     * \param   name    Name of the device data element.
+     * \param   descr   Description of the device data element.
      * \param	val		Value of the data.
      */
-	SensorDataFile( std::string name, std::string descr, SensorDataValue::e_type type,
+	DeviceDataFile( std::string name, std::string descr, DeviceDataValue::e_type type,
 			int access )
-		: SensorData( name, descr, type, access ) {
+		: DeviceData( name, descr, type, access ) {
 
 		/* open the file */
 		FILE* p_file = openFile( true, true );
@@ -98,12 +99,12 @@ public:
 	};
 
     /**
-     * \brief   Default Destructor of the sensor.
+     * \brief   Default Destructor of the device.
      *
      *          Since this is a pure virtual class acting as an interface
      *          this destructor should never be called directly.
      */
-	virtual ~SensorDataFile( void ) {
+	virtual ~DeviceDataFile( void ) {
 		/* delete file from system */
 		remove( getName().c_str() );
 	};
@@ -112,30 +113,30 @@ public:
 private:
 
     /**
-     * \brief   Native read function to get the sensor data value.
+     * \brief   Native read function to get the device data value.
      *
-     *          A sensor can be accessed using different types of mechanisms
+     *          A device can be accessed using different types of mechanisms
      *          or protocols (e.g. ProfiBus, LWM2M). Therefore, the native
-     *          read function is the interface from the abstract sensor data
+     *          read function is the interface from the abstract device data
      *          description and the actual protocol dependent implementation.
-     *          Each sensor type has to implement this function accordingly.
+     *          Each device type has to implement this function accordingly.
      *
      * \return  0 on success.
      */
-    virtual int16_t getValNative( SensorDataValue* val );
+    virtual int16_t getValNative( DeviceDataValue* val );
 
     /**
-     * \brief   Native write function to get the sensor data value.
+     * \brief   Native write function to get the device data value.
      *
-     *          A sensor can be accessed using different types of mechanisms
+     *          A device can be accessed using different types of mechanisms
      *          or protocols (e.g. ProfiBus, LWM2M). Therefore, the native
-     *          write function is the interface from the abstract sensor data
+     *          write function is the interface from the abstract device data
      *          description and the actual protocol dependent implementation.
-     *          Each sensor type has to implement this function accordingly.
+     *          Each device type has to implement this function accordingly.
      *
      * \return  0 on success.
      */
-    virtual int16_t setValNative( const SensorDataValue* val );
+    virtual int16_t setValNative( const DeviceDataValue* val );
 
     /**
      * \brief	Opens the internal file descriptor.
@@ -151,4 +152,4 @@ private:
 	
 };
 
-#endif /* #ifndef __SENSORDATAFILE_H__ */
+#endif /* #ifndef __DEVICEDATAFILE_H__ */

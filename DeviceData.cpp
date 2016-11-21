@@ -17,26 +17,26 @@
  */
 
 /**
- * \file    SensorData.Cpp
+ * \file    DeviceData.Cpp
  * \author  Institute of reliable Embedded Systems
  *          and Communication Electronics
  * \date    $Date$
  * \version $Version$
  *
- * \brief   Description of a single sensor data element.
+ * \brief   Description of a single device data element.
  *
- *          A sensor consist of several sensor elements. A sensor data element
+ *          A device consist of several device elements. A device data element
  *          for example can be a variable or value that can be read or written.
  */
 
 /*
  * --- Includes ------------------------------------------------------------- *
  */
+#include <DeviceData.h>
 #include <stdint.h>
 #include <iostream>
 #include <string>
 
-#include "SensorData.h"
 
 
 /*
@@ -47,7 +47,7 @@
 /*
 * getVal()
 */
-const SensorDataValue* SensorData::getVal( void )
+const DeviceDataValue* DeviceData::getVal( void )
 {
 	/* check if the value is readable */
 	if( m_readable)
@@ -69,7 +69,7 @@ const SensorDataValue* SensorData::getVal( void )
 /*
 * setVal()
 */
-int16_t SensorData::setVal( const SensorDataValue* val )
+int16_t DeviceData::setVal( const DeviceDataValue* val )
 {
 	/* check if the value is writable */
 	if( m_writable)
@@ -92,7 +92,7 @@ int16_t SensorData::setVal( const SensorDataValue* val )
 /*
 * observeVal()
 */
-int16_t SensorData::observeVal( pf_observeCB pf_cb, void* p_param )
+int16_t DeviceData::observeVal( pf_observeCB pf_cb, void* p_param )
 {
 	if( m_observable )
 	{
@@ -114,7 +114,7 @@ int16_t SensorData::observeVal( pf_observeCB pf_cb, void* p_param )
 /*
 * observeVal()
 */
-void SensorData::valueChanged( const SensorDataValue* val )
+void DeviceData::valueChanged( const DeviceDataValue* val )
 {
 	if( (val != NULL) && (*val != m_val) )
 	{

@@ -32,6 +32,7 @@
  */
 #ifndef __SENSORDATALWM2M_H__
 #define __SENSORDATALWM2M_H__
+
 #ifndef __DECL_SENSORDATALWM2M_H__
 #define __DECL_SENSORDATALWM2M_H__ extern
 #endif /* #ifndef __DECL_SENSORDATALWM2M_H__ */
@@ -41,7 +42,7 @@
  * --- Includes ------------------------------------------------------------- *
  */
 #include <iostream>
-#include "SensorData.h"
+#include <DeviceData.h>
 
 
 /**
@@ -51,7 +52,7 @@
  */
 
 class SensorDataLWM2M
-		: public SensorData
+		: public DeviceData
 {
 
 public:
@@ -61,7 +62,7 @@ public:
      *
      */
 	SensorDataLWM2M( void )
-		: SensorData()
+		: DeviceData()
 		{};
 
 
@@ -72,9 +73,9 @@ public:
      * \param   descr   Description of the sensor data element.
      * \param	val		Value of the data.
      */
-	SensorDataLWM2M( std::string name, std::string descr, SensorDataValue::e_type type,
+	SensorDataLWM2M( std::string name, std::string descr, DeviceDataValue::e_type type,
 			int access )
-		: SensorData( name, descr, type, access ){};
+		: DeviceData( name, descr, type, access ){};
 
     /**
      * \brief   Default Destructor of the sensor.
@@ -97,7 +98,7 @@ private:
      *
      * \return  0 on success.
      */
-    virtual int16_t getValNative( SensorDataValue* val ) {return 0;};
+    virtual int16_t getValNative( DeviceDataValue* val ) {return 0;};
 
     /**
      * \brief   Native write function to get the sensor data value.
@@ -110,7 +111,7 @@ private:
      *
      * \return  0 on success.
      */
-    virtual int16_t setValNative( SensorDataValue* val ) {return 0;};
+    virtual int16_t setValNative( DeviceDataValue* val ) {return 0;};
 	
 };
 

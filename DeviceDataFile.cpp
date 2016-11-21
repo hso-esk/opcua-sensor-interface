@@ -17,25 +17,25 @@
  */
 
 /**
- * \file    SensorDataFile.cpp
+ * \file    DeviceDataFile.cpp
  * \author  Institute of reliable Embedded Systems
  *          and Communication Electronics
  * \date    $Date$
  * \version $Version$
  *
- * \brief   Description of the file sensor data element.
+ * \brief   Description of the file device data element.
  *
- *          The file sensor data element describes a specific sensor data
+ *          The file device data element describes a specific device data
  *          that is accessible using the file system. Therefore it inherits
- *          from the general sensor data interface and includes some additional
+ *          from the general device data interface and includes some additional
  *          functions e.g. to access the according file descriptors.
  */
 
 /*
  * --- Includes ------------------------------------------------------------- *
  */
+#include <DeviceDataFile.h>
 #include <iostream>
-#include "SensorDataFile.h"
 
 
 /*
@@ -46,7 +46,7 @@
 /*
 * getValNative()
 */
-int16_t SensorDataFile::getValNative( SensorDataValue* val )
+int16_t DeviceDataFile::getValNative( DeviceDataValue* val )
 {
 	int16_t ret = -1;
 	FILE* p_file = openFile();
@@ -54,22 +54,22 @@ int16_t SensorDataFile::getValNative( SensorDataValue* val )
 	/* Check for the file reference first */
 	if( (p_file != NULL) && (val != 0) )
 	{
-		char buf[SENSORDATAVALUE_STRMAX];
+		char buf[DEVICEDATAVALUE_STRMAX];
 
 		/* Seek to the value position which is the length of the description
 		 * + its prefix + the newline at the end */
-		if( fseek( p_file, strlen(SENSORDATAFILE_DESCR_PFX) + getDescr().length() + 1,
+		if( fseek( p_file, strlen(DEVICEDATAFILE_DESCR_PFX) + getDescr().length() + 1,
 				SEEK_SET ) == 0 )
 		{
 
 			/* depending on the type read the value of the data */
-			if( fgets( buf, SENSORDATAVALUE_STRMAX, p_file ) != NULL )
+			if( fgets( buf, DEVICEDATAVALUE_STRMAX, p_file ) != NULL )
 			{
 				/* Data was read successfully. now put it to the
 				 * according value buffer */
 				switch( val->getType() )
 				{
-					case SensorDataValue::TYPE_INTEGER:
+					case DeviceDataValue::TYPE_INTEGER:
 					{
 						int32_t ibuf;
 						sscanf( buf, "%d", &ibuf );
@@ -78,7 +78,7 @@ int16_t SensorDataFile::getValNative( SensorDataValue* val )
 					}
 
 
-					case SensorDataValue::TYPE_FLOAT:
+					case DeviceDataValue::TYPE_FLOAT:
 					{
 						float fbuf;
 						sscanf( buf, "%f", &fbuf );
@@ -86,7 +86,7 @@ int16_t SensorDataFile::getValNative( SensorDataValue* val )
 						break;
 					}
 
-					case SensorDataValue::TYPE_STRING:
+					case DeviceDataValue::TYPE_STRING:
 						ret = val->setVal( buf );
 						break;
 
@@ -112,7 +112,7 @@ int16_t SensorDataFile::getValNative( SensorDataValue* val )
 /*
 * setValNative()
 */
-int16_t SensorDataFile::setValNative( const SensorDataValue* val )
+int16_t DeviceDataFile::setValNative( const DeviceDataValue* val )
 {
 	int16_t ret = -1;
 	FILE* p_file = openFile( true );
@@ -123,17 +123,17 @@ int16_t SensorDataFile::setValNative( const SensorDataValue* val )
 		/* Write the new data */
 		switch( val->getType() )
 		{
-			case SensorDataValue::TYPE_INTEGER:
+			case DeviceDataValue::TYPE_INTEGER:
 				fprintf( p_file, "%d\n", val->getVal().i32 );
 				ret = 0;
 				break;
 
-			case SensorDataValue::TYPE_FLOAT:
+			case DeviceDataValue::TYPE_FLOAT:
 				fprintf( p_file, "%g\n", val->getVal().f );
 				ret = 0;
 				break;
 
-			case SensorDataValue::TYPE_STRING:
+			case DeviceDataValue::TYPE_STRING:
 				fprintf( p_file, "%s\n", val->getVal().cStr );
 				ret = 0;
 				break;
@@ -154,7 +154,7 @@ int16_t SensorDataFile::setValNative( const SensorDataValue* val )
 /*
 * openFile()
 */
-FILE* SensorDataFile::openFile( bool wr, bool defaultVal )
+FILE* DeviceDataFile::openFile( bool wr, bool defaultVal )
 {
 	FILE* p_ret = NULL;
 
@@ -178,8 +178,8 @@ FILE* SensorDataFile::openFile( bool wr, bool defaultVal )
 		{
 			/* write the description of the value into the first line
 			 * of the file. */
-			fwrite( SENSORDATAFILE_DESCR_PFX, sizeof(char),
-					strlen(SENSORDATAFILE_DESCR_PFX), p_ret );
+			fwrite( DEVICEDATAFILE_DESCR_PFX, sizeof(char),
+					strlen(DEVICEDATAFILE_DESCR_PFX), p_ret );
 			fwrite( getDescr().c_str(), sizeof(char), getDescr().length(), p_ret );
 			fwrite( "\n", sizeof(char), 1, p_ret );
 

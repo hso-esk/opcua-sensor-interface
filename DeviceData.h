@@ -17,24 +17,24 @@
  */
 
 /**
- * \file    SensorData.h
+ * \file    DeviceData.h
  * \author  Institute of reliable Embedded Systems
  *          and Communication Electronics
  * \date    $Date$
  * \version $Version$
  *
- * \brief   Description of a single sensor data element.
+ * \brief   Description of a single device data element.
  *
- *          A sensor consist of several sensor elements. A sensor data element
+ *          A device consist of several device elements. A device data element
  *          for example can be a variable or value that can be read or written.
  */
 
 
-#ifndef __SENSORDATA_H__
-#define __SENSORDATA_H__
-#ifndef __DECL_SENSORDATA_H__
-#define __DECL_SENSORDATA_H__ extern
-#endif /* #ifndef __DECL_SENSORDATA_H__ */
+#ifndef __DEVICEDATA_H__
+#define __DEVICEDATA_H__
+#ifndef __DECL_DEVICEDATA_H__
+#define __DECL_DEVICEDATA_H__ extern
+#endif /* #ifndef __DECL_DEVICEDATA_H__ */
 
 
 /*
@@ -44,34 +44,34 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include "SensorDataValue.h"
+#include "DeviceDataValue.h"
 
 /*
  * --- Class Definition ----------------------------------------------------- *
  */
 
 /**
- * \brief   SensorData Class.
+ * \brief   DeviceData Class.
  *
- *          A sensor data represents a single value of a sensor
- *          that can be read or written. Since the sensor data can be
+ *          A device data represents a single value of a device
+ *          that can be read or written. Since the device data can be
  *          of different types this class is implemented as a template.
  */
-class SensorData
+class DeviceData
 {
 
 	/**
 	 * \brief	Callback function definition for observing data.
 	 *
 	 * 			Data cannot only be written and read but also
-	 * 			observed. To observe sensor data a callback
+	 * 			observed. To observe device data a callback
 	 * 			function has to be given which shall be called
 	 * 			whenever the observed value changes.
 	 *
-	 * \param   p_val   	Name of the sensor data value that changed.
+	 * \param   p_val   	Name of the device data value that changed.
 	 * \param   p_param    	User parameter.
 	 */
-	typedef void (*pf_observeCB)( const SensorDataValue* p_val, void* p_param );
+	typedef void (*pf_observeCB)( const DeviceDataValue* p_val, void* p_param );
 
 public:
 
@@ -90,31 +90,31 @@ public:
 
 
     /**
-     * \brief   Default Constructor to create a Sensor element.
+     * \brief   Default Constructor to create a Device element.
      */
-    SensorData( void )
+    DeviceData( void )
 		: m_name( "undefined" )
 		, m_descr( "undefined" )
 		, m_readable( true )
 		, m_writable( false )
 		, m_observable( false )
 		, m_observed( false )
-		, m_val( SensorDataValue(SensorDataValue::TYPE_INTEGER) )
+		, m_val( DeviceDataValue(DeviceDataValue::TYPE_INTEGER) )
 		{};
 
     /**
      * \brief   Constructor with a specific default name and description.
      *
-     * \param   name    Name of the sensor data element.
-     * \param   desc    Description of the sensor data element.
+     * \param   name    Name of the device data element.
+     * \param   desc    Description of the device data element.
      */
-    SensorData( std::string name, std::string descr, SensorDataValue::e_type type,
+    DeviceData( std::string name, std::string descr, DeviceDataValue::e_type type,
     		int access )
 		: m_name( name )
 		, m_descr( descr )
-		, m_readable( access & SensorData::ACCESS_READ )
-		, m_writable( access & SensorData::ACCESS_WRITE )
-		, m_observable( access & SensorData::ACCESS_OBSERVE )
+		, m_readable( access & DeviceData::ACCESS_READ )
+		, m_writable( access & DeviceData::ACCESS_WRITE )
+		, m_observable( access & DeviceData::ACCESS_OBSERVE )
 		, m_observed( false )
 		, m_val( type ) {
 
@@ -123,14 +123,14 @@ public:
     };
 
     /**
-     * \brief   Default Destructor of the sensor element.
+     * \brief   Default Destructor of the device element.
      */
-	virtual ~SensorData( void ) {};
+	virtual ~DeviceData( void ) {};
 
     /**
-     * \brief   Get the name of the sensor data element.
+     * \brief   Get the name of the device data element.
      *
-     * \return  The name of the sensor data element.
+     * \return  The name of the device data element.
      */
     std::string getName( void ) {
     	/* return name */
@@ -138,9 +138,9 @@ public:
     }
 
     /**
-     * \brief   Get the description of the sensor data element.
+     * \brief   Get the description of the device data element.
      *
-     * \return  The description of the sensor data element.
+     * \return  The description of the device data element.
      */
     std::string getDescr( void ) {
     	/* return description */
@@ -178,23 +178,23 @@ public:
     }
 
     /**
-     * \brief   Get the actual value sensor data element.
+     * \brief   Get the actual value device data element.
      *
-     * \return  The actual value of the sensor data element.
+     * \return  The actual value of the device data element.
      */
-    const SensorDataValue* getVal( void );
+    const DeviceDataValue* getVal( void );
 
     /**
-     * \brief   Set the actual value sensor data element.
+     * \brief   Set the actual value device data element.
      *
-     * \param   val     Value to set the sensor data to.
+     * \param   val     Value to set the device data to.
      *
      * \return  returns true if the value was set.
      */
-    int16_t setVal( const SensorDataValue* val );
+    int16_t setVal( const DeviceDataValue* val );
 
     /**
-     * \brief   Observe the actual value sensor data element.
+     * \brief   Observe the actual value device data element.
      *
      * 			If a value is observed a specific callback function
      * 			will be called whenever the value changes.
@@ -217,35 +217,35 @@ protected:
      *
      * \param	val		The new value.
      */
-    void valueChanged( const SensorDataValue* val );
+    void valueChanged( const DeviceDataValue* val );
 
 private:
 
     /**
-     * \brief   Native read function to get the sensor data value.
+     * \brief   Native read function to get the device data value.
      *
-     *          A sensor can be accessed using different types of mechanisms
+     *          A device can be accessed using different types of mechanisms
      *          or protocols (e.g. ProfiBus, LWM2M). Therefore, the native
-     *          read function is the interface from the abstract sensor data
+     *          read function is the interface from the abstract device data
      *          description and the actual protocol dependent implementation.
-     *          Each sensor type has to implement this function accordingly.
+     *          Each device type has to implement this function accordingly.
      *
      * \return  0 on success.
      */
-    virtual int16_t getValNative( SensorDataValue* val ) = 0;
+    virtual int16_t getValNative( DeviceDataValue* val ) = 0;
     
     /**
-     * \brief   Native write function to get the sensor data value.
+     * \brief   Native write function to get the device data value.
      *
-     *          A sensor can be accessed using different types of mechanisms
+     *          A device can be accessed using different types of mechanisms
      *          or protocols (e.g. ProfiBus, LWM2M). Therefore, the native
-     *          write function is the interface from the abstract sensor data
+     *          write function is the interface from the abstract device data
      *          description and the actual protocol dependent implementation.
-     *          Each sensor type has to implement this function accordingly.
+     *          Each device type has to implement this function accordingly.
      *
      * \return  0 on success.
      */
-    virtual int16_t setValNative( const SensorDataValue* val ) = 0;
+    virtual int16_t setValNative( const DeviceDataValue* val ) = 0;
 
 private:
 
@@ -268,7 +268,7 @@ private:
     bool m_observed;
 
     /** The actual value */
-    SensorDataValue m_val;
+    DeviceDataValue m_val;
 
     struct s_cb{
     	/** callback function */
@@ -281,5 +281,5 @@ private:
     std::vector< s_cb > m_cbs;
 };
 
-#endif /* #ifndef __SENSORDATA_H__ */
+#endif /* #ifndef __DEVICEDATA_H__ */
 
