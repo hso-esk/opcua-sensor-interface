@@ -107,6 +107,8 @@ public:
      *
      * \param   name    Name of the device data element.
      * \param   desc    Description of the device data element.
+     * \param	type	Type of the data value.
+     * \param	access	Access permissions.
      */
     DeviceData( std::string name, std::string descr, DeviceDataValue::e_type type,
     		int access )

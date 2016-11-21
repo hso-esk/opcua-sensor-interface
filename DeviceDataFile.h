@@ -86,7 +86,8 @@ public:
      *
      * \param   name    Name of the device data element.
      * \param   descr   Description of the device data element.
-     * \param	val		Value of the data.
+     * \param	type	Type of the data value.
+     * \param	access	Access permissions.
      */
 	DeviceDataFile( std::string name, std::string descr, DeviceDataValue::e_type type,
 			int access )
