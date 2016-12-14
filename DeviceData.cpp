@@ -32,7 +32,7 @@
 /*
  * --- Includes ------------------------------------------------------------- *
  */
-#include <DeviceData.h>
+#include "DeviceData.h"
 #include <stdint.h>
 #include <iostream>
 #include <string>

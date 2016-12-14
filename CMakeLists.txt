@@ -7,13 +7,15 @@
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
 
-include_directories(
-   ${PROJECT_SOURCE_DIR}/OpcUaSensorInterface
+LIST(APPEND OpcUaSensorInterface_SRC
+  ${PROJECT_SOURCE_DIR}/../../niki/opcua-sensor-interface/DeviceData.cpp
+  ${PROJECT_SOURCE_DIR}/../../niki/opcua-sensor-interface/DeviceData.h
+  ${PROJECT_SOURCE_DIR}/../../niki/opcua-sensor-interface/DeviceDataFile.cpp
+  ${PROJECT_SOURCE_DIR}/../../niki/opcua-sensor-interface/DeviceDataFile.h
+  ${PROJECT_SOURCE_DIR}/../../niki/opcua-sensor-interface/Device.h
+  ${PROJECT_SOURCE_DIR}/../../niki/opcua-sensor-interface/DeviceDataValue.h
+  ${PROJECT_SOURCE_DIR}/../../niki/opcua-sensor-interface/DeviceDataLWM2M.h
 )
-
-file(GLOB OpcUaSensorInterface_SRC ${PROJECT_SOURCE_DIR}/OpcUaSensorInterface/*.cpp)
-MESSAGE( STATUS "sourcefiles: " ${OpcUaSensorInterface_SRC} )
-MESSAGE( STATUS "proje source: " ${PROJECT_SOURCE_DIR} )
 
 add_library(OpcUaSensorInterface SHARED ${OpcUaSensorInterface_SRC})
 
