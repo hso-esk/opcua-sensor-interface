@@ -17,7 +17,7 @@
  */
 
 /**
- * \file    SensorDataLWM2M.h
+ * \file    DeviceDataLWM2M.h
  * \author  Institute of reliable Embedded Systems
  *          and Communication Electronics
  * \date    $Date$
@@ -42,17 +42,21 @@
  * --- Includes ------------------------------------------------------------- *
  */
 #include <iostream>
-#include "DeviceData.h"
 
+#include "DeviceData.h"
+#include "LWM2MServer.h"
+#include "LWM2MDevice.h"
+#include "LWM2MObject.h"
+#include "LWM2MResource.h"
 
 /**
  * \brief   LWM2M Sensor Class.
  *
- *          The LWM2M Sensor Class provides the 
+ *          The LWM2M Sensor Class provides the
  */
 
-class SensorDataLWM2M
-		: public DeviceData
+class DeviceDataLWM2M
+        : public DeviceData
 {
 
 public:
@@ -61,21 +65,29 @@ public:
      * \brief   Default Constructor to create a sensor.
      *
      */
-	SensorDataLWM2M( void )
-		: DeviceData()
-		{};
+    DeviceDataLWM2M( void )
+        : DeviceData()
+        , mp_lwm2mSrv( NULL )
+        , mp_lwm2mRes( NULL ) {};
 
 
     /**
      * \brief   Constructor with a specific default name and description.
      *
-     * \param   name    Name of the sensor data element.
-     * \param   descr   Description of the sensor data element.
-     * \param	val		Value of the data.
+     * \param   name        Name of the sensor data element.
+     * \param   descr       Description of the sensor data element.
+     * \param    val            Value of the data.
+     * \param    p_lwm2mRes    LWM2M Resource the data resource to.
      */
-	SensorDataLWM2M( std::string name, std::string descr, DeviceDataValue::e_type type,
-			int access )
-		: DeviceData( name, descr, type, access ){};
+    DeviceDataLWM2M( std::string name, std::string descr, DeviceDataValue::e_type type,
+            int access, LWM2MResource* p_lwm2mRes )
+        : DeviceData( name, descr, type, access )
+        , mp_lwm2mSrv( NULL )
+        , mp_lwm2mRes( p_lwm2mRes ){
+
+            if( mp_lwm2mRes != NULL )
+                mp_lwm2mSrv = mp_lwm2mRes->getParent()->getParent()->getServer();
+    };
 
     /**
      * \brief   Default Destructor of the sensor.
@@ -83,7 +95,16 @@ public:
      *          Since this is a pure virtual class acting as an interface
      *          this destructor should never be called directly.
      */
-	virtual ~SensorDataLWM2M( void ) {};
+    virtual ~DeviceDataLWM2M( void ) {
+
+        if( mp_lwm2mRes != NULL )
+        {
+            const LWM2MObject* p_obj = mp_lwm2mRes->getParent();
+            if( p_obj != NULL )
+                delete p_obj;
+        }
+
+    };
 
 private:
 
@@ -98,7 +119,7 @@ private:
      *
      * \return  0 on success.
      */
-    virtual int16_t getValNative( DeviceDataValue* val ) {return 0;};
+    virtual int16_t getValNative( DeviceDataValue* val );
 
     /**
      * \brief   Native write function to get the sensor data value.
@@ -111,8 +132,16 @@ private:
      *
      * \return  0 on success.
      */
-    virtual int16_t setValNative( DeviceDataValue* val ) {return 0;};
-	
+    virtual int16_t setValNative( const DeviceDataValue* val );
+
+private:
+
+    /** LWM2M Server this data was assigned to */
+    LWM2MServer* mp_lwm2mSrv;
+
+    /** LWM2M Resource this data was assigned to */
+    LWM2MResource* mp_lwm2mRes;
+
 };
 
 #endif /* #ifndef __SENSORDATALWM2M_H__ */

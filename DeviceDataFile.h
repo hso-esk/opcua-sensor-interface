@@ -49,7 +49,7 @@
  */
 
 /** Prefix of the description line */
-#define DEVICEDATAFILE_DESCR_PFX			"# "
+#define DEVICEDATAFILE_DESCR_PFX            "# "
 
 
 /*
@@ -62,7 +62,7 @@
  *          The File Device Class provides the
  */
 class DeviceDataFile
-		: public DeviceData
+        : public DeviceData
 {
 
 public:
@@ -71,14 +71,14 @@ public:
      * \brief   Default Constructor to create a device.
      *
      */
-	DeviceDataFile( void )
-		: DeviceData() {
+    DeviceDataFile( void )
+        : DeviceData() {
 
-		/* open the file */
-		FILE* p_file = openFile( true, true );
-		if( p_file != NULL )
-			fclose(p_file);
-	};
+        /* open the file */
+        FILE* p_file = openFile( true, true );
+        if( p_file != NULL )
+            fclose(p_file);
+    };
 
 
     /**
@@ -86,18 +86,18 @@ public:
      *
      * \param   name    Name of the device data element.
      * \param   descr   Description of the device data element.
-     * \param	type	Type of the data value.
-     * \param	access	Access permissions.
+     * \param    type    Type of the data value.
+     * \param    access    Access permissions.
      */
-	DeviceDataFile( std::string name, std::string descr, DeviceDataValue::e_type type,
-			int access )
-		: DeviceData( name, descr, type, access ) {
+    DeviceDataFile( std::string name, std::string descr, DeviceDataValue::e_type type,
+            int access )
+        : DeviceData( name, descr, type, access ) {
 
-		/* open the file */
-		FILE* p_file = openFile( true, true );
-		if( p_file != NULL )
-			fclose(p_file);
-	};
+        /* open the file */
+        FILE* p_file = openFile( true, true );
+        if( p_file != NULL )
+            fclose(p_file);
+    };
 
     /**
      * \brief   Default Destructor of the device.
@@ -105,10 +105,10 @@ public:
      *          Since this is a pure virtual class acting as an interface
      *          this destructor should never be called directly.
      */
-	virtual ~DeviceDataFile( void ) {
-		/* delete file from system */
-		remove( getName().c_str() );
-	};
+    virtual ~DeviceDataFile( void ) {
+        /* delete file from system */
+        remove( getName().c_str() );
+    };
 
 
 private:
@@ -140,17 +140,17 @@ private:
     virtual int16_t setValNative( const DeviceDataValue* val );
 
     /**
-     * \brief	Opens the internal file descriptor.
+     * \brief    Opens the internal file descriptor.
      *
-     * \param	wr			Open for writing or not.
-     * \param	defaultVal	Write default value or not.
+     * \param    wr            Open for writing or not.
+     * \param    defaultVal    Write default value or not.
      *
-     * \return 	File Pointer on success or NULL on failure.
+     * \return     File Pointer on success or NULL on failure.
      */
     FILE* openFile( bool wr = false, bool defaultVal = false );
 
 private:
-	
+
 };
 
 #endif /* #ifndef __DEVICEDATAFILE_H__ */

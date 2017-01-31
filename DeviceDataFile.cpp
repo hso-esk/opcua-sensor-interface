@@ -48,64 +48,64 @@
 */
 int16_t DeviceDataFile::getValNative( DeviceDataValue* val )
 {
-	int16_t ret = -1;
-	FILE* p_file = openFile();
+    int16_t ret = -1;
+    FILE* p_file = openFile();
 
-	/* Check for the file reference first */
-	if( (p_file != NULL) && (val != 0) )
-	{
-		char buf[DEVICEDATAVALUE_STRMAX];
+    /* Check for the file reference first */
+    if( (p_file != NULL) && (val != 0) )
+    {
+        char buf[DEVICEDATAVALUE_STRMAX];
 
-		/* Seek to the value position which is the length of the description
-		 * + its prefix + the newline at the end */
-		if( fseek( p_file, strlen(DEVICEDATAFILE_DESCR_PFX) + getDescr().length() + 1,
-				SEEK_SET ) == 0 )
-		{
+        /* Seek to the value position which is the length of the description
+         * + its prefix + the newline at the end */
+        if( fseek( p_file, strlen(DEVICEDATAFILE_DESCR_PFX) + getDescr().length() + 1,
+                SEEK_SET ) == 0 )
+        {
 
-			/* depending on the type read the value of the data */
-			if( fgets( buf, DEVICEDATAVALUE_STRMAX, p_file ) != NULL )
-			{
-				/* Data was read successfully. now put it to the
-				 * according value buffer */
-				switch( val->getType() )
-				{
-					case DeviceDataValue::TYPE_INTEGER:
-					{
-						int32_t ibuf;
-						sscanf( buf, "%d", &ibuf );
-						ret = val->setVal( ibuf );
-						break;
-					}
+            /* depending on the type read the value of the data */
+            if( fgets( buf, DEVICEDATAVALUE_STRMAX, p_file ) != NULL )
+            {
+                /* Data was read successfully. now put it to the
+                 * according value buffer */
+                switch( val->getType() )
+                {
+                    case DeviceDataValue::TYPE_INTEGER:
+                    {
+                        int32_t ibuf;
+                        sscanf( buf, "%d", &ibuf );
+                        ret = val->setVal( ibuf );
+                        break;
+                    }
 
 
-					case DeviceDataValue::TYPE_FLOAT:
-					{
-						float fbuf;
-						sscanf( buf, "%f", &fbuf );
-						ret = val->setVal( fbuf );
-						break;
-					}
+                    case DeviceDataValue::TYPE_FLOAT:
+                    {
+                        float fbuf;
+                        sscanf( buf, "%f", &fbuf );
+                        ret = val->setVal( fbuf );
+                        break;
+                    }
 
-					case DeviceDataValue::TYPE_STRING:
-						ret = val->setVal( buf );
-						break;
+                    case DeviceDataValue::TYPE_STRING:
+                        ret = val->setVal( buf );
+                        break;
 
-					default:
-						ret = -1;
-						break;
-				}
-			}
-			else
-				ret = -2;
-		}
-		else
-			ret = -3;
-		fclose( p_file );
-	}
-	else
-		ret = -4;
+                    default:
+                        ret = -1;
+                        break;
+                }
+            }
+            else
+                ret = -2;
+        }
+        else
+            ret = -3;
+        fclose( p_file );
+    }
+    else
+        ret = -4;
 
-	return ret;
+    return ret;
 }
 
 /*---------------------------------------------------------------------------*/
@@ -114,40 +114,40 @@ int16_t DeviceDataFile::getValNative( DeviceDataValue* val )
 */
 int16_t DeviceDataFile::setValNative( const DeviceDataValue* val )
 {
-	int16_t ret = -1;
-	FILE* p_file = openFile( true );
+    int16_t ret = -1;
+    FILE* p_file = openFile( true );
 
-	/* Check for the file reference first */
-	if( (p_file != NULL) && (val != 0) )
-	{
-		/* Write the new data */
-		switch( val->getType() )
-		{
-			case DeviceDataValue::TYPE_INTEGER:
-				fprintf( p_file, "%d\n", val->getVal().i32 );
-				ret = 0;
-				break;
+    /* Check for the file reference first */
+    if( (p_file != NULL) && (val != 0) )
+    {
+        /* Write the new data */
+        switch( val->getType() )
+        {
+            case DeviceDataValue::TYPE_INTEGER:
+                fprintf( p_file, "%d\n", val->getVal().i32 );
+                ret = 0;
+                break;
 
-			case DeviceDataValue::TYPE_FLOAT:
-				fprintf( p_file, "%g\n", val->getVal().f );
-				ret = 0;
-				break;
+            case DeviceDataValue::TYPE_FLOAT:
+                fprintf( p_file, "%g\n", val->getVal().f );
+                ret = 0;
+                break;
 
-			case DeviceDataValue::TYPE_STRING:
-				fprintf( p_file, "%s\n", val->getVal().cStr );
-				ret = 0;
-				break;
+            case DeviceDataValue::TYPE_STRING:
+                fprintf( p_file, "%s\n", val->getVal().cStr );
+                ret = 0;
+                break;
 
-			default:
-				ret = -1;
-				break;
-		}
-		fclose( p_file );
-	}
-	else
-		ret = -1;
+            default:
+                ret = -1;
+                break;
+        }
+        fclose( p_file );
+    }
+    else
+        ret = -1;
 
-	return ret;
+    return ret;
 }
 
 /*---------------------------------------------------------------------------*/
@@ -156,43 +156,43 @@ int16_t DeviceDataFile::setValNative( const DeviceDataValue* val )
 */
 FILE* DeviceDataFile::openFile( bool wr, bool defaultVal )
 {
-	FILE* p_ret = NULL;
+    FILE* p_ret = NULL;
 
-	/* create access parameters */
-	std::string fAccess = "";
-	if( getWritable() && (wr == true) )
-		fAccess += "a+";
-	else if( getReadable( ))
-		fAccess += "r";
+    /* create access parameters */
+    std::string fAccess = "";
+    if( getWritable() && (wr == true) )
+        fAccess += "a+";
+    else if( getReadable( ))
+        fAccess += "r";
 
-	fAccess += "b";
+    fAccess += "b";
 
-	if( wr == true )
-	{
-		/* create the file object according to the naming with
-		 * full permission to create the file and to add the
-		 * description and default value */
-		p_ret = fopen( getName().c_str(), "w" );
+    if( wr == true )
+    {
+        /* create the file object according to the naming with
+         * full permission to create the file and to add the
+         * description and default value */
+        p_ret = fopen( getName().c_str(), "w" );
 
-		if( (p_ret != NULL)  )
-		{
-			/* write the description of the value into the first line
-			 * of the file. */
-			fwrite( DEVICEDATAFILE_DESCR_PFX, sizeof(char),
-					strlen(DEVICEDATAFILE_DESCR_PFX), p_ret );
-			fwrite( getDescr().c_str(), sizeof(char), getDescr().length(), p_ret );
-			fwrite( "\n", sizeof(char), 1, p_ret );
+        if( (p_ret != NULL)  )
+        {
+            /* write the description of the value into the first line
+             * of the file. */
+            fwrite( DEVICEDATAFILE_DESCR_PFX, sizeof(char),
+                    strlen(DEVICEDATAFILE_DESCR_PFX), p_ret );
+            fwrite( getDescr().c_str(), sizeof(char), getDescr().length(), p_ret );
+            fwrite( "\n", sizeof(char), 1, p_ret );
 
-			/* write default value if requested */
-			if( defaultVal == true )
-				fwrite( "0\n", sizeof(char), 2, p_ret );
-			fclose( p_ret );
-		}
-	}
+            /* write default value if requested */
+            if( defaultVal == true )
+                fwrite( "0\n", sizeof(char), 2, p_ret );
+            fclose( p_ret );
+        }
+    }
 
-	/* create the file object according to the naming */
-	p_ret = fopen( getName().c_str(), fAccess.c_str() );
-	return p_ret;
+    /* create the file object according to the naming */
+    p_ret = fopen( getName().c_str(), fAccess.c_str() );
+    return p_ret;
 }
 
 
