@@ -48,6 +48,7 @@
 #include "LWM2MDevice.h"
 #include "LWM2MObject.h"
 #include "LWM2MResource.h"
+#include "LWM2MResourceObserver.h"
 
 /**
  * \brief   LWM2M Sensor Class.
@@ -57,6 +58,7 @@
 
 class DeviceDataLWM2M
         : public DeviceData
+        , public LWM2MResourceObserver
 {
 
 public:
@@ -95,16 +97,19 @@ public:
      *          Since this is a pure virtual class acting as an interface
      *          this destructor should never be called directly.
      */
-    virtual ~DeviceDataLWM2M( void ) {
+    virtual ~DeviceDataLWM2M( void ) { };
 
-        if( mp_lwm2mRes != NULL )
-        {
-            const LWM2MObject* p_obj = mp_lwm2mRes->getParent();
-            if( p_obj != NULL )
-                delete p_obj;
-        }
-
-    };
+    /**
+     * \brief    Get the resource ID.
+     *
+     * \param    p_srv        The server the notification is from.
+     * \param    p_res        The resource the notification is for.
+     * \param    p_params    Parameters of the notification.
+     *
+     * \return     0 on success or negative value on error.
+     */
+    virtual int8_t notify( const LWM2MServer* p_srv, const LWM2MResource* p_res,
+            const s_lwm2m_resobsparams_t* p_params );
 
 private:
 
@@ -134,6 +139,19 @@ private:
      */
     virtual int16_t setValNative( const DeviceDataValue* val );
 
+    /**
+     * \brief   Native function to observe the device data value.
+     *
+     *          A device can be accessed using different types of mechanisms
+     *          or protocols (e.g. ProfiBus, LWM2M). Therefore, the observe
+     *           function is the interface from the abstract device data
+     *          description and the actual protocol dependent implementation.
+     *          Each device type has to implement this function accordingly.
+     *
+     * \return  0 on success.
+     */
+    virtual int8_t observeValNative( void );
+
 private:
 
     /** LWM2M Server this data was assigned to */
@@ -141,6 +159,9 @@ private:
 
     /** LWM2M Resource this data was assigned to */
     LWM2MResource* mp_lwm2mRes;
+
+    /** Callback parameters for observation */
+    LWM2MServer::s_cbparams_t m_cbData;
 
 };
 

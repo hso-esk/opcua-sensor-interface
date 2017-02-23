@@ -98,13 +98,16 @@ int16_t DeviceData::observeVal( pf_observeCB pf_cb, void* p_param )
     {
         if( pf_cb != NULL )
         {
-            /* create a new callback elemet and insert it
-             * into the callback vector */
-            struct s_cb cb =  { pf_cb, p_param };
-            m_cbs.push_back( cb );
-            m_observed = true;
-
-            return 0;
+            /* call native observe */
+            if( observeValNative() == 0 )
+            {
+              /* create a new callback elemet and insert it
+               * into the callback vector */
+              struct s_cb cb =  { pf_cb, p_param };
+              m_cbs.push_back( cb );
+              m_observed = true;
+              return 0;
+            }
         }
     }
     return -1;

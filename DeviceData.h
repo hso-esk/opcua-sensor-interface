@@ -249,6 +249,19 @@ private:
      */
     virtual int16_t setValNative( const DeviceDataValue* val ) = 0;
 
+    /**
+     * \brief   Native function to observe the device data value.
+     *
+     *          A device can be accessed using different types of mechanisms
+     *          or protocols (e.g. ProfiBus, LWM2M). Therefore, the observe
+     *           function is the interface from the abstract device data
+     *          description and the actual protocol dependent implementation.
+     *          Each device type has to implement this function accordingly.
+     *
+     * \return  0 on success.
+     */
+    virtual int8_t observeValNative( void ) = 0;
+
 private:
 
     /** name of the data element */

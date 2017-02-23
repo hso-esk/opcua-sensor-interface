@@ -43,6 +43,29 @@
  * --- Methods Definition ----------------------------------------------------- *
  */
 
+
+/*---------------------------------------------------------------------------*/
+/*
+* getValNative()
+*/
+int8_t DeviceDataLWM2M::notify( const LWM2MServer* p_srv,  const LWM2MResource* p_res,
+        const s_lwm2m_resobsparams_t* p_params )
+{
+    std::string dataStr = "";
+    if( p_params->data != NULL )
+    {
+        dataStr.append( (char*)p_params->data, p_params->dataLength );
+
+        /* set the new value and indicate change */
+        DeviceDataValue val = *(getVal());
+        val.setVal( (char*)dataStr.c_str() );
+
+        valueChanged( &val );
+    }
+
+    return 0;
+}
+
 /*---------------------------------------------------------------------------*/
 /*
 * getValNative()
@@ -141,6 +164,24 @@ int16_t DeviceDataLWM2M::setValNative( const DeviceDataValue* val )
     return ret;
 }
 
+/*---------------------------------------------------------------------------*/
+/*
+* observeValNative()
+*/
+int8_t DeviceDataLWM2M::observeValNative( void )
+{
+    int8_t ret = -1;
 
-
+    if( (mp_lwm2mSrv != NULL) &&
+        (mp_lwm2mSrv->hasDevice( mp_lwm2mRes->getParent()->getParent()->getName() )))
+    {
+      /* observe the value */
+      if( mp_lwm2mSrv->observe( mp_lwm2mRes, true, &m_cbData ) == 0 )
+      {
+        /* observe was successful */
+        ret = mp_lwm2mRes->registerObserver( this );
+      }
+    }
+    return ret;
+}
 
