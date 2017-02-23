@@ -170,6 +170,17 @@ public:
             m_val.i32 = val;
             return 0;
         }
+        else if( m_type == TYPE_FLOAT )
+        {
+            m_val.f = (float)val;
+            return 0;
+        }
+        else if( m_type == TYPE_STRING )
+        {
+          snprintf(m_val.cStr, DEVICEDATAVALUE_STRMAX,
+                  "%d", val );
+          return 0;
+        }
         return -1;
     }
 
@@ -188,6 +199,17 @@ public:
         {
             m_val.f = val;
             return 0;
+        }
+        else if( m_type == TYPE_INTEGER )
+        {
+          m_val.i32 = (int32_t)val;
+          return 0;
+        }
+        else if( m_type == TYPE_STRING )
+        {
+          snprintf(m_val.cStr, DEVICEDATAVALUE_STRMAX,
+                  "%f", val );
+          return 0;
         }
         return -1;
     }
@@ -215,6 +237,16 @@ public:
             if( pos  < l )
                 m_val.cStr[pos] = '\0';
             return 0;
+        }
+        else if( m_type == TYPE_INTEGER )
+        {
+          sscanf( val.c_str(), "%d", &m_val.i32 );
+          return 0;
+        }
+        else if( m_type == TYPE_FLOAT )
+        {
+          sscanf( val.c_str(), "%f", &m_val.f );
+          return 0;
         }
         return -1;
     }
