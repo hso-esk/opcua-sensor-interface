@@ -14,6 +14,7 @@ LIST(APPEND OpcUaSensorInterface_SRC
   ${PROJECT_SOURCE_DIR}/../../niki/opcua-sensor-interface/DeviceDataFile.h
   ${PROJECT_SOURCE_DIR}/../../niki/opcua-sensor-interface/Device.h
   ${PROJECT_SOURCE_DIR}/../../niki/opcua-sensor-interface/DeviceDataValue.h
+  ${PROJECT_SOURCE_DIR}/../../niki/opcua-sensor-interface/DeviceDataLWM2M.cpp
   ${PROJECT_SOURCE_DIR}/../../niki/opcua-sensor-interface/DeviceDataLWM2M.h
 )
 
