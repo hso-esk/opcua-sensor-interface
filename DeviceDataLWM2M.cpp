@@ -52,13 +52,29 @@ int8_t DeviceDataLWM2M::notify( const LWM2MServer* p_srv,  const LWM2MResource* 
         const s_lwm2m_resobsparams_t* p_params )
 {
     std::string dataStr = "";
-    if( p_params->data != NULL )
-    {
-        dataStr.append( (char*)p_params->data, p_params->dataLength );
 
-        /* set the new value and indicate change */
+    if( (p_params != NULL) && (p_params->data != NULL) )
+    {
         DeviceDataValue val = *(getVal());
-        val.setVal( (char*)dataStr.c_str() );
+        switch( p_params->data->type )
+        {
+          case LWM2M_TYPE_STRING:
+            dataStr.append( (char*)p_params->data->value.asBuffer.buffer );
+            val.setVal( (char*)dataStr.c_str() );
+            break;
+
+          case LWM2M_TYPE_INTEGER:
+          case LWM2M_TYPE_BOOLEAN:
+            val.setVal( (int)p_params->data->value.asInteger );
+            break;
+
+          case LWM2M_TYPE_FLOAT:
+            val.setVal( (float)p_params->data->value.asFloat );
+            break;
+
+          default:
+            break;
+        }
 
         valueChanged( &val );
     }
@@ -77,45 +93,39 @@ int16_t DeviceDataLWM2M::getValNative( DeviceDataValue* val )
     if( (mp_lwm2mSrv != NULL) &&
         (mp_lwm2mSrv->hasDevice( mp_lwm2mRes->getParent()->getParent()->getName() )))
     {
-        std::string str;
+        lwm2m_data_t* data;
+        std::string dataStr = "";
 
         /* The Device with the according resource is available. So we can read
          * the value from the device. */
-        ret = mp_lwm2mSrv->read( mp_lwm2mRes, str, NULL );
+        ret = mp_lwm2mSrv->read( mp_lwm2mRes, &data, NULL );
 
-        if( ret == 0 )
+        if( (val != NULL) && (data != NULL) )
         {
-            /* read was successful. Now we can transfer the data to the according
-             * value format. */
-            /* Data was read successfully. now put it to the
-             * according value buffer */
-            switch( val->getType() )
+            switch( data->type )
             {
-                case DeviceDataValue::TYPE_INTEGER:
-                {
-                    int32_t ibuf;
-                    sscanf( str.c_str(), "%d", &ibuf );
-                    ret = val->setVal( ibuf );
+                case LWM2M_TYPE_STRING:
+                    dataStr.append( (char*)data->value.asBuffer.buffer );
+                    val->setVal( (char*)dataStr.c_str() );
                     break;
-                }
 
-                case DeviceDataValue::TYPE_FLOAT:
-                {
-                    float fbuf;
-                    sscanf( str.c_str(), "%f", &fbuf );
-                    ret = val->setVal( fbuf );
+                case LWM2M_TYPE_INTEGER:
+                case LWM2M_TYPE_BOOLEAN:
+                    val->setVal( (int)data->value.asInteger );
                     break;
-                }
 
-                case DeviceDataValue::TYPE_STRING:
-                    ret = val->setVal( str.c_str() );
+                case LWM2M_TYPE_FLOAT:
+                    val->setVal( (float)data->value.asFloat );
                     break;
 
                 default:
-                    ret = -1;
                     break;
             }
         }
+
+        if( data != NULL )
+          lwm2m_data_free( ret, data );
+        ret = 0;
     }
     return ret;
 }
