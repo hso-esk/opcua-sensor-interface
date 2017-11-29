@@ -59,6 +59,7 @@
 #include <string.h>
 #include <iostream>
 #include <string>
+#include <arpa/inet.h>
 
 /*
  * --- DEFINES -------------------------------------------------------------- *
@@ -66,6 +67,7 @@
 
 /** maximum length of the value as a string */
 #define DEVICEDATAVALUE_STRMAX            50
+#define DEVICEDATAVALUE_OPAQUEMAX         50
 
 /*
  * --- Class Definition ----------------------------------------------------- *
@@ -82,7 +84,9 @@ public:
         /** float type */
         TYPE_FLOAT,
         /** string type */
-        TYPE_STRING
+        TYPE_STRING,
+        /** Opaque type */
+        TYPE_OPAQUE
     };
 
     /** union of the value */
@@ -94,6 +98,14 @@ public:
         float f;
         /** value as string */
         char cStr[DEVICEDATAVALUE_STRMAX];
+
+        union
+        {
+          /** value */
+          uint8_t val[DEVICEDATAVALUE_OPAQUEMAX];
+          /** length */
+          uint16_t len;
+        } u_opaque;
     };
 
     /** overloaded comparison operator */
@@ -122,6 +134,14 @@ public:
                     return false;
                 break;
 
+            case TYPE_OPAQUE:
+                if( cmp1.m_val.u_opaque.len != cmp2.m_val.u_opaque.len )
+                    return false;
+                if( memcmp( cmp1.m_val.u_opaque.val, cmp2.m_val.u_opaque.val,
+                    cmp1.m_val.u_opaque.len ) != 0)
+                  return false;
+                break;
+
             default:
                 return false;
         }
@@ -144,9 +164,7 @@ public:
         : m_type( type ) {
 
         /* reset members */
-        m_val.i32 = 0;
-        m_val.f = 0;
-        memset( m_val.cStr, 0, DEVICEDATAVALUE_STRMAX );
+        memset( &m_val, 0, sizeof(m_val) );
     };
 
     /**
@@ -195,6 +213,10 @@ public:
                   "%d", val );
           return 0;
         }
+        else if ( m_type == TYPE_OPAQUE )
+        {
+          return -1;
+        }
         return -1;
     }
 
@@ -224,6 +246,10 @@ public:
           snprintf(m_val.cStr, DEVICEDATAVALUE_STRMAX,
                   "%f", val );
           return 0;
+        }
+        else if ( m_type == TYPE_OPAQUE )
+        {
+          return -1;
         }
         return -1;
     }
@@ -261,6 +287,76 @@ public:
         {
           sscanf( val.c_str(), "%f", &m_val.f );
           return 0;
+        }
+        else if ( m_type == TYPE_OPAQUE )
+        {
+          return -1;
+        }
+        return -1;
+    }
+
+
+    /**
+     * \brief    Set the value of the data value element as opaque.
+     *
+     *             Sets the value of the data element as as opaque.
+     *
+     *     \param    val        Value to set.
+     *     \param    len        Length of the Value to set.
+     *
+     *     \return 0 on success.
+     */
+    int16_t setVal( uint8_t* val, uint16_t len ) {
+        if( m_type == TYPE_STRING )
+        {
+            if( len > (DEVICEDATAVALUE_STRMAX-1) )
+              return -1;
+            memcpy( &m_val.cStr, val, len );
+            m_val.cStr[len] = 0;
+            return 0;
+        }
+        else if( m_type == TYPE_INTEGER )
+        {
+          switch( len )
+          {
+            case 1:
+              m_val.i32 = (int8_t)val[0];
+              return 1;
+              break;
+
+            case 2:
+            {
+              int16_t value;
+              memcpy( &value, val, len );
+              value = htons( value );
+
+              m_val.i32 = value;
+              return 1;
+              break;
+            }
+
+            case 4:
+            {
+              int32_t value;
+              memcpy( &value, val, len );
+              value = htonl( value );
+
+              m_val.i32 = value;
+              return 1;
+              break;
+            }
+          }
+        }
+        else if( m_type == TYPE_FLOAT )
+        {
+
+          return -1;
+        }
+        else if ( m_type == TYPE_OPAQUE )
+        {
+          if( len > DEVICEDATAVALUE_OPAQUEMAX )
+            return -1;
+          memcpy( &m_val.u_opaque.val, val, len );
         }
         return -1;
     }

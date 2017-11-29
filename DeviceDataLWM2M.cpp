@@ -86,6 +86,11 @@ int8_t DeviceDataLWM2M::notify( const LWM2MServer* p_srv,  const LWM2MResource* 
             val.setVal( (float)p_params->data->value.asFloat );
             break;
 
+          case LWM2M_TYPE_OPAQUE:
+            val.setVal( p_params->data->value.asBuffer.buffer,
+                p_params->data->value.asBuffer.length );
+            break;
+
           default:
             break;
         }
