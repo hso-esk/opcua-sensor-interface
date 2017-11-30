@@ -142,7 +142,7 @@ int16_t DeviceDataLWM2M::getValNative( DeviceDataValue* val )
             }
         }
 
-        if( data != NULL )
+        if( (data != NULL) && (ret > 0) )
           lwm2m_data_free( ret, data );
         ret = 0;
     }
