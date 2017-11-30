@@ -204,11 +204,19 @@ int8_t DeviceDataLWM2M::observeValNative( void )
     if( (mp_lwm2mSrv != NULL) &&
         (mp_lwm2mSrv->hasDevice( mp_lwm2mRes->getParent()->getParent()->getName() )))
     {
-      /* observe the value */
-      if( mp_lwm2mSrv->observe( mp_lwm2mRes, true, &m_cbData ) == 0 )
+
+      /* register observer in advance */
+      ret = mp_lwm2mRes->registerObserver( this );
+
+      if( ret == 0 )
       {
-        /* observe was successful */
-        ret = mp_lwm2mRes->registerObserver( this );
+        /* observe the value */
+        if( mp_lwm2mSrv->observe( mp_lwm2mRes, true, &m_cbData ) != 0 )
+        {
+          /* observe was not successful */
+          ret = mp_lwm2mRes->deregisterObserver( this );
+          ret = -1;
+        }
       }
     }
     return ret;
