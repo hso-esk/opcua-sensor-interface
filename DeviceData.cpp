@@ -47,6 +47,7 @@
  * --- Includes ------------------------------------------------------------- *
  */
 #include "DeviceData.h"
+#include "DeviceDataObserver.h"
 #include <stdint.h>
 #include <iostream>
 #include <string>
@@ -106,11 +107,11 @@ int16_t DeviceData::setVal( const DeviceDataValue* val )
 /*
 * observeVal()
 */
-int16_t DeviceData::observeVal( pf_observeCB pf_cb, void* p_param )
+int16_t DeviceData::observeVal( DeviceDataObserver* p_obs, void* p_param )
 {
     if( m_observable )
     {
-        if( pf_cb != NULL )
+        if( p_obs != NULL )
         {
             /* preset observed flag */
             m_observed = true;
@@ -120,8 +121,8 @@ int16_t DeviceData::observeVal( pf_observeCB pf_cb, void* p_param )
             {
               /* create a new callback elemet and insert it
                * into the callback vector */
-              struct s_cb cb =  { pf_cb, p_param };
-              m_cbs.push_back( cb );
+              struct s_obs obs =  { p_obs, p_param };
+              m_obs.push_back( obs );
 
               return 0;
             }
@@ -146,13 +147,13 @@ void DeviceData::valueChanged( const DeviceDataValue* val )
 
         /* check the callback vector and inform all
          * observers */
-        std::vector< s_cb >::iterator it;;
+        std::vector< s_obs >::iterator it;;
 
-        for (it = m_cbs.begin() ; it != m_cbs.end(); ++it)
+        for (it = m_obs.begin() ; it != m_obs.end(); ++it)
         {
             /* call the current callback function */
-            if( (it->pf_cb != NULL) )
-                it->pf_cb( &m_val, it->p_param );
+            if( (it->p_obs != NULL) )
+                it->p_obs->notify( &m_val, this, it->p_param );
         }
     }
 }

@@ -60,6 +60,12 @@
 #include <vector>
 #include "DeviceDataValue.h"
 
+
+/*
+ * --- Forward Declaration ----------------------------------------------------- *
+ */
+class DeviceDataObserver;
+
 /*
  * --- Class Definition ----------------------------------------------------- *
  */
@@ -73,19 +79,6 @@
  */
 class DeviceData
 {
-
-    /**
-     * \brief    Callback function definition for observing data.
-     *
-     *             Data cannot only be written and read but also
-     *             observed. To observe device data a callback
-     *             function has to be given which shall be called
-     *             whenever the observed value changes.
-     *
-     * \param   p_val       Name of the device data value that changed.
-     * \param   p_param        User parameter.
-     */
-    typedef void (*pf_observeCB)( const DeviceDataValue* p_val, void* p_param );
 
 public:
 
@@ -135,7 +128,7 @@ public:
         , m_val( type ) {
 
         /* reset vector */
-        m_cbs.clear();
+        m_obs.clear();
     };
 
     /**
@@ -212,16 +205,16 @@ public:
     /**
      * \brief   Observe the actual value device data element.
      *
-     *             If a value is observed a specific callback function
-     *             will be called whenever the value changes.
+     *          If a value is observed a specific callback function
+     *          will be called whenever the value changes.
      *
-     * \param    pf_cb        Callback function.
-     * \param   p_param        Additional parameter that will given as
-     *                         parameter to the callback function.
+     * \param   pf_obs       Observer.
+     * \param   p_param      Additional parameter that will given as
+     *                       parameter to the callback function.
      *
      * \return  returns true if the value is observed.
      */
-    int16_t observeVal( pf_observeCB pf_cb, void* p_param );
+    int16_t observeVal( DeviceDataObserver* p_obs, void* p_param );
 
 protected:
 
@@ -299,15 +292,15 @@ private:
     /** The actual value */
     DeviceDataValue m_val;
 
-    struct s_cb{
-        /** callback function */
-        pf_observeCB pf_cb;
+    struct s_obs{
+        /** observer */
+        DeviceDataObserver* p_obs;
         /** parameter */
         void* p_param;
     };
 
-    /** vector including all the registered callbacks */
-    std::vector< s_cb > m_cbs;
+    /** vector including all the registered observer */
+    std::vector< s_obs > m_obs;
 };
 
 #endif /* #ifndef __DEVICEDATA_H__ */
