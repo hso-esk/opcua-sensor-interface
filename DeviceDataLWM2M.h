@@ -105,6 +105,15 @@ public:
                 mp_lwm2mSrv = mp_lwm2mRes->getParent()->getParent()->getServer();
     };
 
+
+    /**
+     * \brief   Return the LWM2MRessource mapped to the data..
+     *
+     * \return  The LWM2M Resource mapped to the Data.
+     */
+    LWM2MResource* getResource( void ) const { return mp_lwm2mRes; };
+
+
     /**
      * \brief   Default Destructor of the sensor.
      *
