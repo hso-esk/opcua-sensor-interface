@@ -124,7 +124,8 @@ int16_t DeviceDataLWM2M::getValNative( DeviceDataValue* val )
             switch( data->type )
             {
                 case LWM2M_TYPE_STRING:
-                    dataStr.append( (char*)data->value.asBuffer.buffer );
+                    dataStr.assign( (char*)data->value.asBuffer.buffer,
+                        data->value.asBuffer.length );
                     val->setVal( (char*)dataStr.c_str() );
                     break;
 
