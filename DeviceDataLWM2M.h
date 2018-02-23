@@ -102,7 +102,7 @@ public:
         , mp_lwm2mRes( p_lwm2mRes ){
 
             if( mp_lwm2mRes != NULL )
-                mp_lwm2mSrv = mp_lwm2mRes->getParent()->getParent()->getServer();
+                mp_lwm2mSrv = mp_lwm2mRes->getServer();
     };
 
 

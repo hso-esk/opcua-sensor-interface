@@ -110,7 +110,7 @@ int16_t DeviceDataLWM2M::getValNative( DeviceDataValue* val )
     int16_t ret = -1;
 
     if( (mp_lwm2mSrv != NULL) &&
-        (mp_lwm2mSrv->hasDevice( mp_lwm2mRes->getParent()->getParent()->getName() )))
+        (mp_lwm2mSrv->hasDevice( mp_lwm2mRes->getDevice()->getName() )))
     {
         lwm2m_data_t* data;
         std::string dataStr = "";
@@ -160,7 +160,7 @@ int16_t DeviceDataLWM2M::setValNative( const DeviceDataValue* val )
     char buf[100];
 
     if( (mp_lwm2mSrv != NULL) &&
-        (mp_lwm2mSrv->hasDevice( mp_lwm2mRes->getParent()->getParent()->getName() )))
+        (mp_lwm2mSrv->hasDevice( mp_lwm2mRes->getDevice()->getName() )))
     {
         /* Write the new data */
         switch( val->getType() )
@@ -203,7 +203,7 @@ int8_t DeviceDataLWM2M::observeValNative( void )
     int8_t ret = -1;
 
     if( (mp_lwm2mSrv != NULL) &&
-        (mp_lwm2mSrv->hasDevice( mp_lwm2mRes->getParent()->getParent()->getName() )))
+        (mp_lwm2mSrv->hasDevice( mp_lwm2mRes->getDevice()->getName() )))
     {
 
       /* register observer in advance */
