@@ -107,20 +107,20 @@ public:
 
 
     /**
-     * \brief   Return the LWM2MRessource mapped to the data..
-     *
-     * \return  The LWM2M Resource mapped to the Data.
-     */
-    LWM2MResource* getResource( void ) const { return mp_lwm2mRes; };
-
-
-    /**
      * \brief   Default Destructor of the sensor.
      *
      *          Since this is a pure virtual class acting as an interface
      *          this destructor should never be called directly.
      */
-    virtual ~DeviceDataLWM2M( void ) { };
+    virtual ~DeviceDataLWM2M( void ) {};
+
+
+    /**
+     * \brief   Return the LWM2MRessource mapped to the data..
+     *
+     * \return  The LWM2M Resource mapped to the Data.
+     */
+    LWM2MResource* getResource( void ) const { return mp_lwm2mRes; };
 
     /**
      * \brief    Get the resource ID.
