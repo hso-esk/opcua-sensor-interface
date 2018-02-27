@@ -212,7 +212,7 @@ int8_t DeviceDataLWM2M::observeValNative( void )
       if( ret == 0 )
       {
         /* observe the value */
-        if( mp_lwm2mSrv->observe( mp_lwm2mRes, true, &m_cbData ) != 0 )
+        if( mp_lwm2mSrv->observe( mp_lwm2mRes, true ) != 0 )
         {
           /* observe was not successful */
           ret = mp_lwm2mRes->deregisterObserver( this );

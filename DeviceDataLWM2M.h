@@ -182,10 +182,6 @@ private:
 
     /** LWM2M Resource this data was assigned to */
     LWM2MResource* mp_lwm2mRes;
-
-    /** Callback parameters for observation */
-    LWM2MServer::s_cbparams_t m_cbData;
-
 };
 
 #endif /* #ifndef __SENSORDATALWM2M_H__ */
