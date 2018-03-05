@@ -119,7 +119,7 @@ int16_t DeviceDataLWM2M::getValNative( DeviceDataValue* val )
          * the value from the device. */
         ret = mp_lwm2mSrv->read( mp_lwm2mRes, &data, NULL );
 
-        if( (val != NULL) && (data != NULL) )
+        if( (val != NULL) && (data != NULL) && (ret > 0) )
         {
             switch( data->type )
             {
@@ -141,11 +141,11 @@ int16_t DeviceDataLWM2M::getValNative( DeviceDataValue* val )
                 default:
                     break;
             }
+            ret = 0;
         }
 
         if( (data != NULL) && (ret > 0) )
           lwm2m_data_free( ret, data );
-        ret = 0;
     }
     return ret;
 }
