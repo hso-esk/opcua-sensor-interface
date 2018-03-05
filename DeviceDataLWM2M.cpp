@@ -63,7 +63,7 @@
 * getValNative()
 */
 int8_t DeviceDataLWM2M::notify( const LWM2MServer* p_srv,  const LWM2MResource* p_res,
-        const s_lwm2m_resobsparams_t* p_params )
+        const s_lwm2m_obsparams_t* p_params )
 {
     std::string dataStr = "";
 
