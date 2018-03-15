@@ -349,8 +349,16 @@ public:
         }
         else if( m_type == TYPE_FLOAT )
         {
+          int32_t value;
+          if(len != sizeof(float))
+            return -1;
 
-          return -1;
+          memcpy( &value, val, len );
+          value = htonl( value );
+
+          m_val.i32 = value;
+          return 1;
+
         }
         else if ( m_type == TYPE_OPAQUE )
         {
