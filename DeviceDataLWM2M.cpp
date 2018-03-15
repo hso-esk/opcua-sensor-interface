@@ -209,7 +209,7 @@ int8_t DeviceDataLWM2M::observeValNative( bool direct )
       /* register observer in advance */
       ret = mp_lwm2mRes->registerObserver( this );
 
-      if( ret == 0 )
+      if( (ret == 0) && (m_observed == false))
       {
         m_observed = true;
 
