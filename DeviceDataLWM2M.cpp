@@ -198,7 +198,7 @@ int16_t DeviceDataLWM2M::setValNative( const DeviceDataValue* val )
 /*
 * observeValNative()
 */
-int8_t DeviceDataLWM2M::observeValNative( void )
+int8_t DeviceDataLWM2M::observeValNative( bool direct )
 {
     int8_t ret = -1;
 
@@ -211,8 +211,13 @@ int8_t DeviceDataLWM2M::observeValNative( void )
 
       if( ret == 0 )
       {
-        /* observe the value */
-        if( mp_lwm2mSrv->observe( mp_lwm2mRes, true ) != 0 )
+        m_observed = true;
+
+        if( direct )
+          /* observe the value */
+          ret = mp_lwm2mSrv->observe( mp_lwm2mRes, true );
+
+        if( ret != 0 )
         {
           /* observe was not successful */
           ret = mp_lwm2mRes->deregisterObserver( this );

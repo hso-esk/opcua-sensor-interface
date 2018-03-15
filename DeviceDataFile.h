@@ -158,13 +158,15 @@ private:
      *
      *          A device can be accessed using different types of mechanisms
      *          or protocols (e.g. ProfiBus, LWM2M). Therefore, the observe
-     *           function is the interface from the abstract device data
+     *          function is the interface from the abstract device data
      *          description and the actual protocol dependent implementation.
      *          Each device type has to implement this function accordingly.
      *
+     * \param   direct  Direct Observation or observed by higher instance.
+     *
      * \return  0 on success.
      */
-    virtual int8_t observeValNative( void );
+    virtual int8_t observeValNative( bool direct = true );
 
     /**
      * \brief    Opens the internal file descriptor.

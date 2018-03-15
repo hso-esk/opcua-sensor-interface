@@ -211,10 +211,11 @@ public:
      * \param   pf_obs       Observer.
      * \param   p_param      Additional parameter that will given as
      *                       parameter to the callback function.
+     * \param   direct       Direct Observation or observed by higher instance.
      *
      * \return  returns true if the value is observed.
      */
-    int16_t observeVal( DeviceDataObserver* p_obs, void* p_param );
+    int16_t observeVal( DeviceDataObserver* p_obs, void* p_param, bool direct = true );
 
 protected:
 
@@ -261,13 +262,21 @@ private:
      *
      *          A device can be accessed using different types of mechanisms
      *          or protocols (e.g. ProfiBus, LWM2M). Therefore, the observe
-     *           function is the interface from the abstract device data
+     *          function is the interface from the abstract device data
      *          description and the actual protocol dependent implementation.
      *          Each device type has to implement this function accordingly.
      *
+     * \param   direct  Direct Observation or observed by higher instance.
+     *
      * \return  0 on success.
      */
-    virtual int8_t observeValNative( void ) = 0;
+    virtual int8_t observeValNative( bool direct = true ) = 0;
+
+
+protected:
+
+    /** value is observed */
+    bool m_observed;
 
 private:
 
@@ -285,9 +294,6 @@ private:
 
     /** defines if the value is observable */
     bool m_observable;
-
-    /** value is observed */
-    bool m_observed;
 
     /** The actual value */
     DeviceDataValue m_val;

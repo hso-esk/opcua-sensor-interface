@@ -171,9 +171,11 @@ private:
      *          description and the actual protocol dependent implementation.
      *          Each device type has to implement this function accordingly.
      *
+     * \param   direct  Direct Observation or observed by higher instance.
+     *
      * \return  0 on success.
      */
-    virtual int8_t observeValNative( void );
+    virtual int8_t observeValNative( bool direct = true );
 
 private:
 

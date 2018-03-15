@@ -168,7 +168,7 @@ int16_t DeviceDataFile::setValNative( const DeviceDataValue* val )
 /*
 * observeValNative()
 */
-int8_t DeviceDataFile::observeValNative( void )
+int8_t DeviceDataFile::observeValNative( bool direct )
 {
     int8_t ret = 0;
     return ret;

@@ -107,15 +107,12 @@ int16_t DeviceData::setVal( const DeviceDataValue* val )
 /*
 * observeVal()
 */
-int16_t DeviceData::observeVal( DeviceDataObserver* p_obs, void* p_param )
+int16_t DeviceData::observeVal( DeviceDataObserver* p_obs, void* p_param,bool direct )
 {
     if( m_observable )
     {
         if( p_obs != NULL )
         {
-            /* preset observed flag */
-            m_observed = true;
-
             /* call native observe */
             if( observeValNative() == 0 )
             {
@@ -124,6 +121,7 @@ int16_t DeviceData::observeVal( DeviceDataObserver* p_obs, void* p_param )
               struct s_obs obs =  { p_obs, p_param };
               m_obs.push_back( obs );
 
+              m_observed = true;
               return 0;
             }
             else
