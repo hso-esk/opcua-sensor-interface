@@ -138,7 +138,7 @@ int16_t DeviceData::observeVal( DeviceDataObserver* p_obs, void* p_param,bool di
 */
 void DeviceData::valueChanged( const DeviceDataValue* val )
 {
-    if( (val != NULL) && (*val != m_val) )
+    if(val != NULL)
     {
         /* update value */
         m_val = *val;
