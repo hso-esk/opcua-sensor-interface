@@ -114,7 +114,7 @@ int16_t DeviceData::observeVal( DeviceDataObserver* p_obs, void* p_param,bool di
         if( p_obs != NULL )
         {
             /* call native observe */
-            if( observeValNative() == 0 )
+            if( observeValNative( direct ) == 0 )
             {
               /* create a new callback elemet and insert it
                * into the callback vector */
