@@ -138,6 +138,11 @@ int16_t DeviceDataLWM2M::getValNative( DeviceDataValue* val )
                     val->setVal( (float)data->value.asFloat );
                     break;
 
+                case LWM2M_TYPE_OPAQUE:
+                  val->setVal( data->value.asBuffer.buffer,
+                      data->value.asBuffer.length );
+                  break;
+
                 default:
                     break;
             }
