@@ -8,14 +8,14 @@
 # -----------------------------------------------------------------------------
 
 LIST(APPEND OpcUaSensorInterface_SRC
-  ${PROJECT_SOURCE_DIR}/../../niki/opcua-sensor-interface/DeviceData.cpp
-  ${PROJECT_SOURCE_DIR}/../../niki/opcua-sensor-interface/DeviceData.h
-  ${PROJECT_SOURCE_DIR}/../../niki/opcua-sensor-interface/DeviceDataFile.cpp
-  ${PROJECT_SOURCE_DIR}/../../niki/opcua-sensor-interface/DeviceDataFile.h
-  ${PROJECT_SOURCE_DIR}/../../niki/opcua-sensor-interface/Device.h
-  ${PROJECT_SOURCE_DIR}/../../niki/opcua-sensor-interface/DeviceDataValue.h
-  ${PROJECT_SOURCE_DIR}/../../niki/opcua-sensor-interface/DeviceDataLWM2M.cpp
-  ${PROJECT_SOURCE_DIR}/../../niki/opcua-sensor-interface/DeviceDataLWM2M.h
+  ${PROJECT_SOURCE_DIR}/../../opcua-plugin/opcua-sensor-interface/DeviceData.cpp
+  ${PROJECT_SOURCE_DIR}/../../opcua-plugin/opcua-sensor-interface/DeviceData.h
+  ${PROJECT_SOURCE_DIR}/../../opcua-plugin/opcua-sensor-interface/DeviceDataFile.cpp
+  ${PROJECT_SOURCE_DIR}/../../opcua-plugin/opcua-sensor-interface/DeviceDataFile.h
+  ${PROJECT_SOURCE_DIR}/../../opcua-plugin/opcua-sensor-interface/Device.h
+  ${PROJECT_SOURCE_DIR}/../../opcua-plugin/opcua-sensor-interface/DeviceDataValue.h
+  ${PROJECT_SOURCE_DIR}/../../opcua-plugin/opcua-sensor-interface/DeviceDataLWM2M.cpp
+  ${PROJECT_SOURCE_DIR}/../../opcua-plugin/opcua-sensor-interface/DeviceDataLWM2M.h
 )
 
 add_library(OpcUaSensorInterface SHARED ${OpcUaSensorInterface_SRC})
